@@ -2,9 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export const enableApiDocs = (app: INestApplication, globalPrefix: string): void => {
-  const docUiEnabled: boolean = process.env.DOCS_UI_ENABLED
-    ? JSON.parse(process.env.DOCS_UI_ENABLED)
-    : false;
+  const docUiEnabled: boolean = process.env.DOCS_UI_ENABLED === 'true';
 
   if (!docUiEnabled) return;
 
