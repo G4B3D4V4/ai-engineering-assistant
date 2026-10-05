@@ -1,11 +1,41 @@
+import { APP_FILTER } from '@nestjs/core';
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { randomUUID } from 'node:crypto';
+import { LoggerModule } from 'nestjs-pino';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
-import { ConfigModule } from '@nestjs/config';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule, HealthModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    LoggerModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        pinoHttp: {
+          level: configService.get<string>('NODE_ENV') === 'production' ? 'info' : 'debug',
+          redact: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]'],
+          genReqId: () => randomUUID(),
+          transport:
+            configService.get<string>('NODE_ENV') !== 'production'
+              ? {
+                  target: 'pino-pretty',
+                  options: { colorize: true, singleLine: true, translateTime: 'SYS:standard' },
+                }
+              : undefined,
+        },
+      }),
+    }),
+    DatabaseModule,
+    HealthModule,
+  ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}
