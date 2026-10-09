@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service.js';
 import { hashPassword, verifyPassword } from '../common/crypto/password.js';
 import { UserResponse } from '../users/dto/responses/user-response.dto.js';
-import { AccessTokenResponse } from './dto/responses/acces-token-response.dto.js';
+import { AccessTokenResponse } from './dto/responses/access-token-response.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
 
 @Injectable()

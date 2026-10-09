@@ -7,10 +7,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service.js';
-import { AccessTokenResponse } from './dto/responses/acces-token-response.dto.js';
+import { AccessTokenResponse } from './dto/responses/access-token-response.dto.js';
 import { LocalAuthGuard } from './guards/local-auth.guard.js';
 import { LoginDto } from './dto/login.dto.js';
-import { type AuthenticatedRequest } from './interfaces/authenticated-request.interface.js';
+import { type LocalAuthenticatedRequest } from './interfaces/authenticated-request.interface.js';
 import { RegisterDto } from './dto/register.dto.js';
 import { AUTH_API_MESSAGES } from '../common/consts/message.constants.js';
 
@@ -40,7 +40,7 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() _receivedUser: LoginDto,
-    @Request() { user }: AuthenticatedRequest,
+    @Request() { user }: LocalAuthenticatedRequest,
   ): Promise<AccessTokenResponse> {
     return await this.authService.login(user);
   }

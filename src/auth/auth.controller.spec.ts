@@ -4,7 +4,7 @@ import { AuthService } from './auth.service.js';
 import { authServiceMock } from '../../test/mocks/services/auth-service.mock.js';
 import { mockUser } from '../../test/fixtures/users/user.fixture.js';
 import { mockAccessToken, mockPassword } from '../../test/fixtures/auth/auth.fixture.js';
-import { AuthenticatedRequest } from './interfaces/authenticated-request.interface.js';
+import { LocalAuthenticatedRequest } from './interfaces/authenticated-request.interface.js';
 import { ConflictException } from '@nestjs/common';
 
 describe('AuthController', () => {
@@ -71,7 +71,7 @@ describe('AuthController', () => {
 
     const request = {
       user: mockUser,
-    } as AuthenticatedRequest;
+    } as LocalAuthenticatedRequest;
 
     authServiceMock.login.mockResolvedValue({
       access_token: mockAccessToken,

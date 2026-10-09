@@ -32,5 +32,5 @@ export class UserDto {
 
   @ApiProperty({ type: String, example: '2026-10-06T06:54:12.345Z', format: 'date-time' })
   @IsDateString()
-  updateddAt: string;
+  updatedAt: string;
 }
