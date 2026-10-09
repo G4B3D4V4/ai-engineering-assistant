@@ -6,6 +6,8 @@ import { LoggerModule } from 'nestjs-pino';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
+import { AuthModule } from './auth/auth.module.js';
+import { UsersModule } from './users/users.module.js';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
     }),
     DatabaseModule,
     HealthModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [
