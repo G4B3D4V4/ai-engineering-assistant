@@ -23,21 +23,21 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import type { JwtAuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.js';
+import { CONVERSATION_API_MESSAGES } from '../common/consts/message.constants.js';
 import { ConversationsService } from './conversations.service.js';
+import { AddMessageRequest } from './dto/requests/add-message-request.dto.js';
+import { CreateConversationRequest } from './dto/requests/create-conversation-request.dto.js';
+import { SearchConversationsRequest } from './dto/requests/search-conversations-request.dto.js';
+import { UpdateConversationRequest } from './dto/requests/update-conversation-request.dto.js';
 import {
   CreateConversationResponse,
   MessagesResponse,
 } from './dto/responses/create-conversation-response.dto.js';
-import { CreateConversationRequest } from './dto/requests/create-conversation-request.dto.js';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
-import type { JwtAuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.js';
-import { SearchConversationsResponse } from './dto/responses/search-conversations-response.dto.js';
 import { SearchConversationResponse } from './dto/responses/search-conversation-response.dto.js';
-import { AddMessageRequest } from './dto/requests/add-message-request.dto.js';
+import { SearchConversationsResponse } from './dto/responses/search-conversations-response.dto.js';
 import { UpdateConversationResponse } from './dto/responses/update-conversation-response.dto.js';
-import { UpdateConversationRequest } from './dto/requests/update-conversation-request.dto.js';
-import { CONVERSATION_API_MESSAGES } from '../common/consts/message.constants.js';
-import { SearchConversationsRequest } from './dto/requests/search-conversations-request.dto.js';
 
 @ApiTags('Conversations')
 @ApiBearerAuth('jwt-token')

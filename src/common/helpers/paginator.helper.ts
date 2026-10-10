@@ -32,7 +32,7 @@ export function generatePaginator({
   } else {
     pages.push('1');
 
-    let startPage = currentPage - Math.floor(numbersCount / 2);
+    const startPage = currentPage - Math.floor(numbersCount / 2);
 
     if (startPage >= 3) {
       pages.push(startPage === 3 ? '2' : '...');

@@ -1,19 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { generatePaginator } from '../common/helpers/paginator.helper.js';
 import { DatabaseService } from '../database/database.service.js';
-import { CreateConversationRequest } from './dto/requests/create-conversation-request.dto.js';
 import { MessageRole } from '../generated/prisma/enums.js';
+import { AddMessageRequest } from './dto/requests/add-message-request.dto.js';
+import { CreateConversationRequest } from './dto/requests/create-conversation-request.dto.js';
+import { SearchConversationsRequest } from './dto/requests/search-conversations-request.dto.js';
+import { UpdateConversationRequest } from './dto/requests/update-conversation-request.dto.js';
 import {
   CreateConversationResponse,
   MessagesResponse,
 } from './dto/responses/create-conversation-response.dto.js';
-import { SearchConversationsResponse } from './dto/responses/search-conversations-response.dto.js';
 import { SearchConversationResponse } from './dto/responses/search-conversation-response.dto.js';
-import { AddMessageRequest } from './dto/requests/add-message-request.dto.js';
-import { UpdateConversationRequest } from './dto/requests/update-conversation-request.dto.js';
+import { SearchConversationsResponse } from './dto/responses/search-conversations-response.dto.js';
 import { UpdateConversationResponse } from './dto/responses/update-conversation-response.dto.js';
 import { MessagesService } from './messages.service.js';
-import { SearchConversationsRequest } from './dto/requests/search-conversations-request.dto.js';
-import { generatePaginator } from '../common/helpers/paginator.helper.js';
 
 @Injectable()
 export class ConversationsService {

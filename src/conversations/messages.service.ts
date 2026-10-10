@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service.js';
-import { AddMessageRequest } from './dto/requests/add-message-request.dto.js';
 import { MessageRole } from '../generated/prisma/enums.js';
+import { AddMessageRequest } from './dto/requests/add-message-request.dto.js';
 import { MessagesResponse } from './dto/responses/create-conversation-response.dto.js';
 
 @Injectable()
