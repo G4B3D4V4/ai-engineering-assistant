@@ -9,7 +9,7 @@ export class ConversationDto {
 
   @ApiPropertyOptional({
     type: String,
-    description: 'Coversation title',
+    description: 'Conversation title',
     example: 'Build dto',
   })
   @IsString()

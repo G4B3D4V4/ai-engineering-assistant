@@ -72,7 +72,7 @@ export class ConversationsController {
     @Body() body: AddMessageRequest,
     @Request() { user }: JwtAuthenticatedRequest,
   ): Promise<MessagesResponse> {
-    return this.conversationsService.addMessage(user.id, +id, body);
+    return this.conversationsService.addMessage(user.id, id, body);
   }
 
   @ApiOperation({ summary: 'Get conversations list for user' })

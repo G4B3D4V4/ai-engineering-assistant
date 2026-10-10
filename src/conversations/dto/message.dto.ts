@@ -33,7 +33,7 @@ export class MessageDto {
   @MaxLength(10000)
   content: string;
 
-  @ApiProperty({ type: Number, description: 'Conersation ID', example: 2 })
+  @ApiProperty({ type: Number, description: 'Conversation ID', example: 2 })
   @IsNotEmpty()
   @IsNumber()
   conversationId: number;
