@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -65,7 +67,7 @@ export class ConversationsController {
     type: MessagesResponse,
   })
   @ApiNotFoundResponse({ description: CONVERSATION_API_MESSAGES.NOT_FOUND })
-  @Post(':id/meesages')
+  @Post(':id/messages')
   async addMessage(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: AddMessageRequest,
@@ -102,13 +104,13 @@ export class ConversationsController {
   }
 
   @ApiOperation({ summary: 'Set conversation title' })
-  @ApiAcceptedResponse({
+  @ApiOkResponse({
     description: 'updated conversation',
     type: UpdateConversationResponse,
   })
   @ApiNotFoundResponse({ description: CONVERSATION_API_MESSAGES.NOT_FOUND })
   @Patch(':id')
-  async updateTiTle(
+  async updateTitle(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateConversationRequest,
     @Request() { user }: JwtAuthenticatedRequest,
@@ -122,6 +124,7 @@ export class ConversationsController {
     type: undefined,
   })
   @ApiNotFoundResponse({ description: CONVERSATION_API_MESSAGES.NOT_FOUND })
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   async delete(
     @Param('id', ParseIntPipe) id: number,

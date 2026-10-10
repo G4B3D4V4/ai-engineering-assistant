@@ -58,7 +58,7 @@ export class ConversationsService {
     params: SearchConversationsRequest,
   ): Promise<SearchConversationsResponse> {
     const { page, limit } = params;
-    const skip: number = page * limit - params.limit;
+    const skip: number = (page - 1) * limit;
 
     const [data, totalCount] = await Promise.all([
       this.db.conversation.findMany({
@@ -102,7 +102,7 @@ export class ConversationsService {
     conversationId: number,
     dto: AddMessageRequest,
   ): Promise<MessagesResponse> {
-    await this.findOne(conversationId, userId);
+    await this.ensureOwnership(conversationId, userId);
 
     return this.messagesService.create(conversationId, dto);
   }
@@ -112,7 +112,7 @@ export class ConversationsService {
     userId: number,
     dto: UpdateConversationRequest,
   ): Promise<UpdateConversationResponse> {
-    await this.findOne(id, userId);
+    await this.ensureOwnership(id, userId);
     return this.db.conversation.update({
       where: { id, userId },
       data: { title: dto.title },
@@ -121,7 +121,18 @@ export class ConversationsService {
   }
 
   async delete(id: number, userId: number): Promise<void> {
-    await this.findOne(id, userId);
+    await this.ensureOwnership(id, userId);
     await this.db.conversation.delete({ where: { id, userId } });
+  }
+
+  private async ensureOwnership(id: number, userId: number): Promise<void> {
+    const conversation = await this.db.conversation.findUnique({
+      where: { id, userId },
+      select: { id: true },
+    });
+
+    if (!conversation) {
+      throw new NotFoundException('Conversation not found');
+    }
   }
 }
