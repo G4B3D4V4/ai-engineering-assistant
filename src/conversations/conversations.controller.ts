@@ -14,7 +14,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
-  ApiAcceptedResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
