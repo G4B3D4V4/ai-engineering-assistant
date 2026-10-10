@@ -1,17 +1,17 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { JwtService } from '@nestjs/jwt';
 import { ConflictException } from '@nestjs/common';
-import { AuthService } from './auth.service.js';
-import { UsersService } from '../users/users.service.js';
-import { hashPassword, verifyPassword } from '../common/crypto/password.js';
-import { mockUser, mockUserWithPassword } from '../../test/fixtures/users/user.fixture.js';
+import { JwtService } from '@nestjs/jwt';
+import { Test, TestingModule } from '@nestjs/testing';
 import {
   mockAccessToken,
   mockHashedPassword,
   mockPassword,
 } from '../../test/fixtures/auth/auth.fixture.js';
+import { mockUser, mockUserWithPassword } from '../../test/fixtures/users/user.fixture.js';
 import { jwtServiceMock } from '../../test/mocks/services/jwt-service.mock.js';
 import { usersServiceMock } from '../../test/mocks/services/users-service.mock.js';
+import { hashPassword, verifyPassword } from '../common/crypto/password.js';
+import { UsersService } from '../users/users.service.js';
+import { AuthService } from './auth.service.js';
 
 vi.mock('../common/crypto/password.js', () => ({
   hashPassword: vi.fn(),

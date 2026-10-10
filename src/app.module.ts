@@ -1,12 +1,13 @@
-import { APP_FILTER } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { randomUUID } from 'node:crypto';
+import { APP_FILTER } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
+import { randomUUID } from 'node:crypto';
+import { AuthModule } from './auth/auth.module.js';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
+import { ConversationsModule } from './conversations/conversations.module.js';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
-import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
-import { AuthModule } from './auth/auth.module.js';
 import { UsersModule } from './users/users.module.js';
 
 @Module({
@@ -33,6 +34,7 @@ import { UsersModule } from './users/users.module.js';
     HealthModule,
     AuthModule,
     UsersModule,
+    ConversationsModule,
   ],
   controllers: [],
   providers: [

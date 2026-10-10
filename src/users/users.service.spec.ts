@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { UsersService } from './users.service.js';
-import { DatabaseService } from '../database/database.service.js';
-import { databaseServiceMock } from '../../test/mocks/services/database-service.mock.js';
-import { mockUser, mockUserWithPassword } from '../../test/fixtures/users/user.fixture.js';
+import { Test, TestingModule } from '@nestjs/testing';
 import { mockHashedPassword } from '../../test/fixtures/auth/auth.fixture.js';
+import { mockUser, mockUserWithPassword } from '../../test/fixtures/users/user.fixture.js';
+import { databaseServiceMock } from '../../test/mocks/services/database-service.mock.js';
+import { DatabaseService } from '../database/database.service.js';
 import { Prisma } from '../generated/prisma/client.js';
+import { UsersService } from './users.service.js';
 
 describe('UsersService', () => {
   let service: UsersService;

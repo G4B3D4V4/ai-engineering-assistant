@@ -6,13 +6,13 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { AUTH_API_MESSAGES } from '../common/consts/message.constants.js';
 import { AuthService } from './auth.service.js';
+import { LoginDto } from './dto/login.dto.js';
+import { RegisterDto } from './dto/register.dto.js';
 import { AccessTokenResponse } from './dto/responses/access-token-response.dto.js';
 import { LocalAuthGuard } from './guards/local-auth.guard.js';
-import { LoginDto } from './dto/login.dto.js';
 import { type LocalAuthenticatedRequest } from './interfaces/authenticated-request.interface.js';
-import { RegisterDto } from './dto/register.dto.js';
-import { AUTH_API_MESSAGES } from '../common/consts/message.constants.js';
 
 @ApiTags('Auth')
 @Controller('auth')
