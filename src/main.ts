@@ -1,8 +1,8 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module.js';
-import { Logger } from 'nestjs-pino';
-import { enableApiDocs } from './common/swagger/api-docs.js';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { Logger } from 'nestjs-pino';
+import { AppModule } from './app.module.js';
+import { enableApiDocs } from './common/swagger/api-docs.js';
 
 const globalPrefix = 'api';
 async function bootstrap() {

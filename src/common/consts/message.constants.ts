@@ -10,3 +10,7 @@ export const API_MESSAGES = {
 export const AUTH_API_MESSAGES = {
   USER_EXISTS: 'User with this email already exists',
 };
+
+export const CONVERSATION_API_MESSAGES = {
+  NOT_FOUND: 'Conversation not found',
+};

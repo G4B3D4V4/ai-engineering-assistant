@@ -1,11 +1,11 @@
+import { ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mockAccessToken, mockPassword } from '../../test/fixtures/auth/auth.fixture.js';
+import { mockUser } from '../../test/fixtures/users/user.fixture.js';
+import { authServiceMock } from '../../test/mocks/services/auth-service.mock.js';
 import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
-import { authServiceMock } from '../../test/mocks/services/auth-service.mock.js';
-import { mockUser } from '../../test/fixtures/users/user.fixture.js';
-import { mockAccessToken, mockPassword } from '../../test/fixtures/auth/auth.fixture.js';
 import { LocalAuthenticatedRequest } from './interfaces/authenticated-request.interface.js';
-import { ConflictException } from '@nestjs/common';
 
 describe('AuthController', () => {
   let controller: AuthController;

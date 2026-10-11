@@ -1,8 +1,8 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service.js';
+import { Prisma } from '../generated/prisma/client.js';
 import { CreateUserRequest } from './dto/requests/create-user-request.dto.js';
 import { CreateUserResponse } from './dto/responses/create-user-response.dto.js';
-import { Prisma } from '../generated/prisma/client.js';
 import { FindUserByEmailResponse } from './dto/responses/find-user-by-email-response.dto.js';
 import { UserResponse } from './dto/responses/user-response.dto.js';
 
