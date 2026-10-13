@@ -10,7 +10,6 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(
     new ValidationPipe({
-      validateCustomDecorators: true,
       whitelist: true,
       transform: true,
       forbidNonWhitelisted: true,
