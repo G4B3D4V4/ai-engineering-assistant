@@ -4,6 +4,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { randomUUID } from 'node:crypto';
 import { AuthModule } from './auth/auth.module.js';
+import { ChatModule } from './chat/chat.module.js';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 import { ConversationsModule } from './conversations/conversations.module.js';
 import { DatabaseModule } from './database/database.module.js';
@@ -35,6 +36,7 @@ import { UsersModule } from './users/users.module.js';
     AuthModule,
     UsersModule,
     ConversationsModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [
