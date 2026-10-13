@@ -101,7 +101,6 @@ describe('ChatGateway', () => {
 
       expect(client.emit).toHaveBeenNthCalledWith(1, 'chat:stream:start', {
         conversationId: mockChatMessage.conversationId,
-        messageId: mockSavedUserMessage.id,
       });
 
       expect(client.emit).toHaveBeenNthCalledWith(2, 'chat:stream:chunk', {

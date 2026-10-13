@@ -5,9 +5,8 @@ import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { Socket } from 'socket.io';
 import { ConversationsService } from '../conversations/conversations.service.js';
 import { ChatMessageDto } from './dto/chat-message.dto.js';
 import { WsExceptionFilter } from './filters/ws-exception.filter.js';
@@ -24,9 +23,6 @@ export class ChatGateway {
     private readonly conversationsService: ConversationsService,
   ) {}
 
-  @WebSocketServer()
-  server: Server;
-
   async handleConnection(client: Socket) {
     const token = client.handshake.auth.token;
 
@@ -37,10 +33,7 @@ export class ChatGateway {
         id: payload.sub,
         email: payload.email,
       };
-
-      console.log('Authenticated user:', client.data.user);
     } catch {
-      console.log('Invalid token');
       client.disconnect();
     }
   }
@@ -49,19 +42,14 @@ export class ChatGateway {
   async handleMessage(@MessageBody() message: ChatMessageDto, @ConnectedSocket() client: Socket) {
     const userId = client.data.user.id;
 
-    const savedMessage = await this.conversationsService.addMessage(
-      userId,
-      message.conversationId,
-      {
-        content: message.content,
-      },
-    );
+    await this.conversationsService.addMessage(userId, message.conversationId, {
+      content: message.content,
+    });
 
     const chunks = ['Hello', ' from', ' assistant'];
 
     client.emit('chat:stream:start', {
       conversationId: message.conversationId,
-      messageId: savedMessage.id,
     });
 
     for (const chunk of chunks) {
