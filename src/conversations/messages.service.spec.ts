@@ -27,7 +27,7 @@ describe('MessagesService', () => {
   });
 
   describe('create', () => {
-    it('should create user message with provided role', async () => {
+    it('should create message with provided role', async () => {
       const conversationId = 10;
       const content = 'Hello';
       const role = MessageRole.ASSISTANT;
@@ -99,6 +99,7 @@ describe('MessagesService', () => {
         },
         orderBy: {
           createdAt: 'asc',
+          id: 'asc',
         },
       });
 
