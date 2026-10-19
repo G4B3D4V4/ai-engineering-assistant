@@ -7,4 +7,5 @@ export const conversationsServiceMock = {
   findOne: vi.fn(),
   updateTitle: vi.fn(),
   delete: vi.fn(),
+  getMessages: vi.fn(),
 };

@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { conversationsServiceMock } from '../../test/mocks/services/conversations-service.mock.js';
+import { MessageRole } from '../generated/prisma/enums.js';
 import { ConversationsController } from './conversations.controller.js';
 import { ConversationsService } from './conversations.service.js';
 
@@ -72,7 +73,12 @@ describe('ConversationsController', () => {
 
       const result = await controller.addMessage(10, body, request as any);
 
-      expect(conversationsServiceMock.addMessage).toHaveBeenCalledWith(1, 10, body);
+      expect(conversationsServiceMock.addMessage).toHaveBeenCalledWith(
+        1,
+        10,
+        body.content,
+        MessageRole.USER,
+      );
       expect(result).toEqual(expected);
     });
   });

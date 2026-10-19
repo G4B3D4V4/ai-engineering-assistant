@@ -27,24 +27,23 @@ describe('MessagesService', () => {
   });
 
   describe('create', () => {
-    it('should create user message', async () => {
+    it('should create user message with provided role', async () => {
       const conversationId = 10;
-      const dto = {
-        content: 'Hello',
-      };
+      const content = 'Hello';
+      const role = MessageRole.ASSISTANT;
 
       const createdAt = new Date();
 
       const expected = {
         id: 1,
-        role: MessageRole.USER,
-        content: dto.content,
+        role,
+        content,
         createdAt,
       };
 
       databaseServiceMock.message.create.mockResolvedValue(expected);
 
-      const result = await service.create(conversationId, dto);
+      const result = await service.create(conversationId, content, role);
 
       expect(databaseServiceMock.message.create).toHaveBeenCalledWith({
         select: {
@@ -55,12 +54,55 @@ describe('MessagesService', () => {
         },
         data: {
           conversationId,
-          content: dto.content,
-          role: MessageRole.USER,
+          content,
+          role,
         },
       });
 
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('findByConversation', () => {
+    it('should return messages ordered by createdAt ascending', async () => {
+      const conversationId = 10;
+      const now = new Date();
+
+      const messages = [
+        {
+          id: 1,
+          role: MessageRole.USER,
+          content: 'Hello',
+          createdAt: now,
+        },
+        {
+          id: 2,
+          role: MessageRole.ASSISTANT,
+          content: 'Hi',
+          createdAt: now,
+        },
+      ];
+
+      databaseServiceMock.message.findMany.mockResolvedValue(messages);
+
+      const result = await service.findByConversation(conversationId);
+
+      expect(databaseServiceMock.message.findMany).toHaveBeenCalledWith({
+        where: {
+          conversationId,
+        },
+        select: {
+          id: true,
+          role: true,
+          content: true,
+          createdAt: true,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
+      });
+
+      expect(result).toEqual(messages);
     });
   });
 });
