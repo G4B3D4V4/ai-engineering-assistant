@@ -26,6 +26,7 @@ import {
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import type { JwtAuthenticatedRequest } from '../auth/interfaces/authenticated-request.interface.js';
 import { CONVERSATION_API_MESSAGES } from '../common/consts/message.constants.js';
+import { MessageRole } from '../generated/prisma/enums.js';
 import { ConversationsService } from './conversations.service.js';
 import { AddMessageRequest } from './dto/requests/add-message-request.dto.js';
 import { CreateConversationRequest } from './dto/requests/create-conversation-request.dto.js';
@@ -72,7 +73,7 @@ export class ConversationsController {
     @Body() body: AddMessageRequest,
     @Request() { user }: JwtAuthenticatedRequest,
   ): Promise<MessagesResponse> {
-    return this.conversationsService.addMessage(user.id, id, body);
+    return this.conversationsService.addMessage(user.id, id, body.content, MessageRole.USER);
   }
 
   @ApiOperation({ summary: 'Get conversations list for user' })

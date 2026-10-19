@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { generatePaginator } from '../common/helpers/paginator.helper.js';
 import { DatabaseService } from '../database/database.service.js';
 import { MessageRole } from '../generated/prisma/enums.js';
-import { AddMessageRequest } from './dto/requests/add-message-request.dto.js';
 import { CreateConversationRequest } from './dto/requests/create-conversation-request.dto.js';
 import { SearchConversationsRequest } from './dto/requests/search-conversations-request.dto.js';
 import { UpdateConversationRequest } from './dto/requests/update-conversation-request.dto.js';
@@ -100,11 +99,18 @@ export class ConversationsService {
   async addMessage(
     userId: number,
     conversationId: number,
-    dto: AddMessageRequest,
+    content: string,
+    role: MessageRole,
   ): Promise<MessagesResponse> {
     await this.ensureOwnership(conversationId, userId);
 
-    return this.messagesService.create(conversationId, dto);
+    return this.messagesService.create(conversationId, content, role);
+  }
+
+  async getMessages(userId: number, conversationId: number): Promise<MessagesResponse[]> {
+    await this.ensureOwnership(conversationId, userId);
+
+    return this.messagesService.findByConversation(conversationId);
   }
 
   async updateTitle(

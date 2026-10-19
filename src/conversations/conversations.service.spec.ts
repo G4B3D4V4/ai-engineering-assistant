@@ -179,13 +179,9 @@ describe('ConversationsService', () => {
 
       messagesServiceMock.create.mockResolvedValue(expected);
 
-      const result = await service.addMessage(1, 10, {
-        content: 'New message',
-      });
+      const result = await service.addMessage(1, 10, 'New message', MessageRole.USER);
 
-      expect(messagesServiceMock.create).toHaveBeenCalledWith(10, {
-        content: 'New message',
-      });
+      expect(messagesServiceMock.create).toHaveBeenCalledWith(10, 'New message', MessageRole.USER);
 
       expect(result).toEqual(expected);
     });
@@ -193,13 +189,52 @@ describe('ConversationsService', () => {
     it('should throw NotFoundException when conversation does not belong to user', async () => {
       databaseServiceMock.conversation.findUnique.mockResolvedValue(null);
 
-      await expect(
-        service.addMessage(1, 10, {
-          content: 'New message',
-        }),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.addMessage(1, 10, 'New message', MessageRole.USER)).rejects.toThrow(
+        NotFoundException,
+      );
 
       expect(messagesServiceMock.create).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('getMessages', () => {
+    it('should return conversation messages when conversation belongs to user', async () => {
+      databaseServiceMock.conversation.findUnique.mockResolvedValue({
+        id: 10,
+      });
+
+      const now = new Date();
+
+      const messages = [
+        {
+          id: 1,
+          role: MessageRole.USER,
+          content: 'Hello',
+          createdAt: now,
+        },
+        {
+          id: 2,
+          role: MessageRole.ASSISTANT,
+          content: 'Hi',
+          createdAt: now,
+        },
+      ];
+
+      messagesServiceMock.findByConversation.mockResolvedValue(messages);
+
+      const result = await service.getMessages(1, 10);
+
+      expect(messagesServiceMock.findByConversation).toHaveBeenCalledWith(10);
+
+      expect(result).toEqual(messages);
+    });
+
+    it('should throw NotFoundException when conversation does not belong to user', async () => {
+      databaseServiceMock.conversation.findUnique.mockResolvedValue(null);
+
+      await expect(service.getMessages(1, 10)).rejects.toThrow(NotFoundException);
+
+      expect(messagesServiceMock.findByConversation).not.toHaveBeenCalled();
     });
   });
 

@@ -17,5 +17,6 @@ export const databaseServiceMock = {
 
   message: {
     create: vi.fn(),
+    findMany: vi.fn(),
   },
 };
