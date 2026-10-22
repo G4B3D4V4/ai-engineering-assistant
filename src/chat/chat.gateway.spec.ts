@@ -15,6 +15,7 @@ import { AiService } from '../ai/ai.service.js';
 import { ConversationsService } from '../conversations/conversations.service.js';
 import { MessageRole } from '../generated/prisma/enums.js';
 import { ChatGateway } from './chat.gateway.js';
+import { WsThrottlerGuard } from './guards/ws-throttler.guard.js';
 
 describe('ChatGateway', () => {
   let gateway: ChatGateway;
@@ -38,7 +39,12 @@ describe('ChatGateway', () => {
           useValue: aiServiceMock,
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(WsThrottlerGuard)
+      .useValue({
+        canActivate: vi.fn().mockResolvedValue(true),
+      })
+      .compile();
 
     gateway = module.get<ChatGateway>(ChatGateway);
   });
@@ -73,6 +79,28 @@ describe('ChatGateway', () => {
       await gateway.handleConnection(client);
 
       expect(client.disconnect).toHaveBeenCalledOnce();
+    });
+
+    it('should authenticate client using authorization header', async () => {
+      const client = createSocketMock();
+
+      client.handshake.auth = {};
+      client.handshake.headers = {
+        authorization: 'Bearer header-token',
+      };
+
+      jwtServiceMock.verifyAsync.mockResolvedValue(mockJwtPayload);
+
+      await gateway.handleConnection(client);
+
+      expect(jwtServiceMock.verifyAsync).toHaveBeenCalledWith('header-token');
+
+      expect(client.data.user).toEqual({
+        id: mockJwtPayload.sub,
+        email: mockJwtPayload.email,
+      });
+
+      expect(client.disconnect).not.toHaveBeenCalled();
     });
   });
 

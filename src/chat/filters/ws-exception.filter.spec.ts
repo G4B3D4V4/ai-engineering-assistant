@@ -1,6 +1,6 @@
 import { ArgumentsHost, BadRequestException, NotFoundException } from '@nestjs/common';
+import { ThrottlerException } from '@nestjs/throttler';
 import { Socket } from 'socket.io';
-
 import { createSocketMock } from '../../../test/mocks/socket/socket.mock.js';
 import { WsExceptionFilter } from './ws-exception.filter.js';
 
@@ -74,6 +74,23 @@ describe('WsExceptionFilter', () => {
       expect(client.emit).toHaveBeenCalledWith('chat:error', {
         type: 'internal',
         message: 'Something went wrong',
+      });
+    });
+  });
+
+  describe('ThrottlerException', () => {
+    it('should emit rate limit error', () => {
+      const client = createSocketMock();
+
+      const host = createHostMock(client);
+
+      const exception = new ThrottlerException();
+
+      filter.catch(exception, host);
+
+      expect(client.emit).toHaveBeenCalledWith('chat:error', {
+        type: 'rate_limit',
+        message: 'Too many requests',
       });
     });
   });
