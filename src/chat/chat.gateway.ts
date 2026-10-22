@@ -18,7 +18,7 @@ import { WsThrottlerGuard } from './guards/ws-throttler.guard.js';
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin: process.env.FRONTEND_URL ?? 'http://localhost:5173',
   },
 })
 export class ChatGateway {
