@@ -26,7 +26,7 @@ export class MessagesService {
     return this.db.message.findMany({
       where: { conversationId },
       select: { id: true, role: true, content: true, createdAt: true },
-      orderBy: { createdAt: 'asc', id: 'asc' },
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
     });
   }
 }

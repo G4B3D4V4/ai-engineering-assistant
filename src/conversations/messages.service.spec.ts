@@ -97,10 +97,12 @@ describe('MessagesService', () => {
           content: true,
           createdAt: true,
         },
-        orderBy: {
-          createdAt: 'asc',
-          id: 'asc',
-        },
+        orderBy: [
+          {
+            createdAt: 'asc',
+          },
+          { id: 'asc' },
+        ],
       });
 
       expect(result).toEqual(messages);

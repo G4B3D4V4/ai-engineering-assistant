@@ -5,6 +5,7 @@ import {
   HttpException,
   NotFoundException,
 } from '@nestjs/common';
+import { ThrottlerException } from '@nestjs/throttler';
 import { WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 
@@ -51,6 +52,15 @@ export class WsExceptionFilter {
             }
           : error,
       );
+
+      return;
+    }
+
+    if (exception instanceof ThrottlerException) {
+      client.emit('chat:error', {
+        type: 'rate_limit',
+        message: 'Too many requests',
+      });
 
       return;
     }

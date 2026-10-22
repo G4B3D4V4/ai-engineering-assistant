@@ -6,6 +6,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { minutes, Throttle } from '@nestjs/throttler';
 import { AUTH_API_MESSAGES } from '../common/consts/message.constants.js';
 import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
@@ -15,6 +16,12 @@ import { LocalAuthGuard } from './guards/local-auth.guard.js';
 import { type LocalAuthenticatedRequest } from './interfaces/authenticated-request.interface.js';
 
 @ApiTags('Auth')
+@Throttle({
+  default: {
+    limit: 5,
+    ttl: minutes(1),
+  },
+})
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

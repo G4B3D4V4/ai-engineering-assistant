@@ -1,5 +1,6 @@
-import { UseFilters } from '@nestjs/common';
+import { UseFilters, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { minutes, Throttle } from '@nestjs/throttler';
 import {
   ConnectedSocket,
   MessageBody,
@@ -12,6 +13,7 @@ import { ConversationsService } from '../conversations/conversations.service.js'
 import { MessageRole } from '../generated/prisma/enums.js';
 import { ChatMessageDto } from './dto/chat-message.dto.js';
 import { WsExceptionFilter } from './filters/ws-exception.filter.js';
+import { WsThrottlerGuard } from './guards/ws-throttler.guard.js';
 
 @UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
@@ -27,7 +29,8 @@ export class ChatGateway {
   ) {}
 
   async handleConnection(client: Socket) {
-    const token = client.handshake.auth.token;
+    const authHeader = client.handshake.headers.authorization;
+    const token = client.handshake.auth.token ?? authHeader?.replace('Bearer ', '');
 
     try {
       const payload = await this.jwtService.verifyAsync(token);
@@ -41,6 +44,13 @@ export class ChatGateway {
     }
   }
 
+  @UseGuards(WsThrottlerGuard)
+  @Throttle({
+    default: {
+      limit: 10,
+      ttl: minutes(1),
+    },
+  })
   @SubscribeMessage('chat:message')
   async handleMessage(@MessageBody() message: ChatMessageDto, @ConnectedSocket() client: Socket) {
     const userId = client.data.user.id;

@@ -7,6 +7,7 @@ import { enableApiDocs } from './common/swagger/api-docs.js';
 const globalPrefix = 'api';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  app.useSecurityHeaders();
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(
     new ValidationPipe({

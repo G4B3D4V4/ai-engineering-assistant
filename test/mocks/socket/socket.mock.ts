@@ -10,6 +10,7 @@ export const createSocketMock = () =>
       auth: {
         token: 'valid-token',
       },
+      headers: {},
     },
     data: {},
     emit: vi.fn(),
